@@ -2,7 +2,9 @@
 
 A high-performance URL shortener built with **FastAPI** and **PostgreSQL**, engineered with a focus on query performance and deliberate schema design decisions.
 
-**Live demo:** `http://localhost:8000` · **API docs:** `http://localhost:8000/docs`
+**🔗 Live:** [web-production-03d95d.up.railway.app](https://web-production-03d95d.up.railway.app) &nbsp;·&nbsp; **API docs:** [/docs](https://web-production-03d95d.up.railway.app/docs)
+
+> Deployed on Railway with a managed PostgreSQL instance.
 
 ---
 
@@ -24,6 +26,7 @@ A high-performance URL shortener built with **FastAPI** and **PostgreSQL**, engi
 | Database | PostgreSQL 16 |
 | DB driver | psycopg2 |
 | Frontend | Vanilla HTML/CSS/JS (no framework) |
+| Deployment | Railway |
 
 ---
 
@@ -147,15 +150,15 @@ With pooling, expected latency: **< 10ms** — the 0.086ms query cost is what ac
 
 ```bash
 # 1. Clone
-git clone https://github.com/singh-himanshu3/P2-url-shortener.git
-cd P2-url-shortener
+git clone https://github.com/singh-himanshu3/URL-Shortener.git
+cd URL-Shortener
 
 # 2. Virtual environment
 python3 -m venv venv
 source venv/bin/activate
 
 # 3. Install dependencies
-pip install fastapi uvicorn psycopg2-binary aiofiles
+pip install -r requirements.txt
 
 # 4. Create the table (connect to your Postgres instance)
 psql -U postgres -c "
@@ -167,7 +170,8 @@ CREATE TABLE IF NOT EXISTS urls (
     click_count  INTEGER DEFAULT 0
 );"
 
-# 5. Update DB connection string in database.py to match your credentials
+# 5. Set environment variable (or update database.py directly for local dev)
+export DATABASE_URL="dbname=postgres user=postgres password=yourpassword host=localhost"
 
 # 6. Run
 uvicorn main:app --workers 4
@@ -202,6 +206,7 @@ Returns HTTP 404 if slug not found.
 ├── main.py          # FastAPI app, routes, base62 encoder
 ├── models.py        # Pydantic request model (URLRequest)
 ├── database.py      # psycopg2 connection + get_db() dependency
+├── requirements.txt
 └── static/
     └── index.html   # Frontend UI (vanilla HTML/CSS/JS)
 ```
